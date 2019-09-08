@@ -1,4 +1,4 @@
-package study.tobi.spring3.chapter1;
+package study.tobi.spring3.chapter1.user;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
