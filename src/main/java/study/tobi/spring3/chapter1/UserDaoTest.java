@@ -10,7 +10,7 @@ import java.sql.SQLException;
  * Created by Yoo Ju Jin(yjj@hanuritien.com)
  * Created Date : 08/09/2019
  */
-public class Main {
+public class UserDaoTest {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         UserDao dao = new UserDao(new DConnectionMaker());
