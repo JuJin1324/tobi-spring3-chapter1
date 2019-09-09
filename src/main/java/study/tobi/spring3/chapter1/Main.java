@@ -1,7 +1,7 @@
 package study.tobi.spring3.chapter1;
 
 import study.tobi.spring3.chapter1.user.User;
-import study.tobi.spring3.chapter1.user.dao.DUserDao;
+import study.tobi.spring3.chapter1.user.dao.DConnectionMaker;
 import study.tobi.spring3.chapter1.user.dao.UserDao;
 
 import java.sql.SQLException;
@@ -13,17 +13,15 @@ import java.sql.SQLException;
 public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-//        UserDao dao = new UserDao();
-        UserDao dao = new DUserDao();
+        UserDao dao = new UserDao(new DConnectionMaker());
 
         User user = new User();
         user.setId("whiteship");
         user.setPassword("1234");
         user.setName("백기선");
 
-        dao.add(user);
-
-        System.out.println(user.getId() + " 등록 성공");
+//        dao.add(user);
+//        System.out.println(user.getId() + " 등록 성공");
 
         User user2 = dao.get(user.getId());
         System.out.println("user2.getId() = " + user2.getId());

@@ -9,12 +9,15 @@ import java.sql.*;
  * Created Date : 08/09/2019
  */
 
-public abstract class UserDao {
-//    private static final String MYSQL_URL = "jdbc:mysql://192.168.0.4:3306/spring3";
-    protected static final String MYSQL_URL = "jdbc:mysql://localhost:3306/spring3?useSSL=false";
+public class UserDao {
+    private ConnectionMaker connectionMaker;
+
+    public UserDao(ConnectionMaker connectionMaker) {
+        this.connectionMaker = connectionMaker;
+    }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = getConnection();
+        Connection c = connectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values (?, ?, ?)");
         ps.setString(1, user.getId());
@@ -27,14 +30,9 @@ public abstract class UserDao {
         c.close();
     }
 
-    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
-//    private Connection getConnection() throws ClassNotFoundException, SQLException {
-//        Class.forName("com.mysql.jdbc.Driver");
-//        return DriverManager.getConnection(MYSQL_URL, "scott", "tiger");
-//    }
-
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection c = getConnection();
+        Connection c = connectionMaker.makeConnection();
+
         PreparedStatement ps = c.prepareStatement("select id, name, password from users where id = ?");
         ps.setString(1, id);
 
