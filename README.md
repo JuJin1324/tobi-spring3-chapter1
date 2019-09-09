@@ -47,3 +47,13 @@ Class.forName("com.mysql.jdbc.Driver");
 
 * 서브클래스에서 구체적인 오브젝트 생성 방법을 결정하게 하는 것을 <b>팩토리 메서드 패턴</b>이라고 한다.  
 
+* 훅(hook) 메서드 : 슈퍼클래스에서 디폴트 기능을 정의해두거나 비워뒀다가 서브클래스에서 선택적으로 오버라이드할 수 있도록 만들어둔 메서드  
+예시)
+```java
+protected void emptiedhookMethod() {}
+protected void defaulthookMethod() {
+    ...(디폴트 기능)
+}
+public void abstractMethod(); -> 서브클래스가 반드시 구현해야하는 추상 메서드
+```
+
