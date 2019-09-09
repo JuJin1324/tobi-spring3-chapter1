@@ -1,6 +1,27 @@
 # tobi-spring3-chapter1
 토비의 스프링 3.1 Vol.1 스프링 이해와 원리
 
+## Database
+### MySQL 계정 및 스키마 생성
+```mysql
+(도커 사용시 mysql 접속)
+> docker exec -it [컨테이너명] bash
+> mysql -u root -p
+
+* 계정 생성
+> create user 'scott'@'%' identified by 'tiger';
+
+* 권한 주기
+> grant all privileges on *.* to 'scott'@'%';
+> flush privileges;
+
+* spring3 스키마 생성
+> create database spring3;
+
+* 생성 확인
+> show databases;
+```
+
 ### DB Table
 * USERS 테이블
 ```mysql

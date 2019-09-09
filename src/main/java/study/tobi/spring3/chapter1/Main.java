@@ -1,6 +1,7 @@
 package study.tobi.spring3.chapter1;
 
 import study.tobi.spring3.chapter1.user.User;
+import study.tobi.spring3.chapter1.user.dao.DUserDao;
 import study.tobi.spring3.chapter1.user.dao.UserDao;
 
 import java.sql.SQLException;
@@ -12,7 +13,8 @@ import java.sql.SQLException;
 public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao dao = new UserDao();
+//        UserDao dao = new UserDao();
+        UserDao dao = new DUserDao();
 
         User user = new User();
         user.setId("whiteship");

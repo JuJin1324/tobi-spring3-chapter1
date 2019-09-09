@@ -9,7 +9,9 @@ import java.sql.*;
  * Created Date : 08/09/2019
  */
 
-public class UserDao {
+public abstract class UserDao {
+//    private static final String MYSQL_URL = "jdbc:mysql://192.168.0.4:3306/spring3";
+    protected static final String MYSQL_URL = "jdbc:mysql://localhost:3306/spring3?useSSL=false";
 
     public void add(User user) throws ClassNotFoundException, SQLException {
         Connection c = getConnection();
@@ -25,10 +27,11 @@ public class UserDao {
         c.close();
     }
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        return DriverManager.getConnection("jdbc:mysql://192.168.0.4:3306/spring3", "scott", "tiger");
-    }
+    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
+//    private Connection getConnection() throws ClassNotFoundException, SQLException {
+//        Class.forName("com.mysql.jdbc.Driver");
+//        return DriverManager.getConnection(MYSQL_URL, "scott", "tiger");
+//    }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
         Connection c = getConnection();
