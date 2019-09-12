@@ -2,6 +2,7 @@ package study.tobi.spring3.chapter1;
 
 import study.tobi.spring3.chapter1.user.User;
 import study.tobi.spring3.chapter1.user.dao.DConnectionMaker;
+import study.tobi.spring3.chapter1.user.dao.DaoFactory;
 import study.tobi.spring3.chapter1.user.dao.UserDao;
 
 import java.sql.SQLException;
@@ -12,8 +13,11 @@ import java.sql.SQLException;
  */
 public class UserDaoTest {
 
+    private static DaoFactory daoFactory;
+
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao dao = new UserDao(new DConnectionMaker());
+        daoFactory = new DaoFactory();
+        UserDao dao = daoFactory.userDao();
 
         User user = new User();
         user.setId("whiteship");
