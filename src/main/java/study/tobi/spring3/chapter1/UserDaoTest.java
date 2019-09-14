@@ -1,7 +1,8 @@
 package study.tobi.spring3.chapter1;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import study.tobi.spring3.chapter1.user.User;
-import study.tobi.spring3.chapter1.user.dao.DConnectionMaker;
 import study.tobi.spring3.chapter1.user.dao.DaoFactory;
 import study.tobi.spring3.chapter1.user.dao.UserDao;
 
@@ -13,11 +14,27 @@ import java.sql.SQLException;
  */
 public class UserDaoTest {
 
-    private static DaoFactory daoFactory;
-
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        daoFactory = new DaoFactory();
-        UserDao dao = daoFactory.userDao();
+//        userDaoTestUsingApplicationContext();
+        compareDaoCreatedByDaoFactoryDirectly();
+        compareDaoCreatedByApplicationContext();
+    }
+
+    private static void compareDaoCreatedByApplicationContext() {
+        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+
+        UserDao dao3 = context.getBean("userDao", UserDao.class);
+        UserDao dao4 = context.getBean("userDao", UserDao.class);
+
+        System.out.println("dao3 = " + dao3);
+        System.out.println("dao4 = " + dao4);
+        System.out.println("dao3 == dao4 is equal? : " + (dao3 == dao4));
+    }
+
+    private static void userDaoTestUsingApplicationContext() throws ClassNotFoundException, SQLException {
+        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+
+        UserDao dao = context.getBean("userDao", UserDao.class);
 
         User user = new User();
         user.setId("whiteship");
@@ -33,5 +50,15 @@ public class UserDaoTest {
         System.out.println("user2.getName() = " + user2.getName());
 
         System.out.println(user2.getId() + " 조회 성공");
+    }
+
+    private static void compareDaoCreatedByDaoFactoryDirectly() {
+        DaoFactory daoFactory = new DaoFactory();
+        UserDao dao1 = daoFactory.userDao();
+        UserDao dao2 = daoFactory.userDao();
+
+        System.out.println("dao1 = " + dao1);
+        System.out.println("dao2 = " + dao2);
+        System.out.println("dao1 == dao2 is equal? : " + (dao1 == dao2));
     }
 }

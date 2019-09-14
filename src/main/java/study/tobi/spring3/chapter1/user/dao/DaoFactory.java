@@ -1,27 +1,34 @@
 package study.tobi.spring3.chapter1.user.dao;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 /**
  * Created by Yoo Ju Jin(yjj@hanuritien.com)
  * Created Date : 2019-09-12
  *
- * 마치 @Configuration 클래스에서 빈(Bean) 객체를 생성했을 때와 비슷하다.
- *
  */
+
+@Configuration
 public class DaoFactory {
 
+    @Bean
     public UserDao userDao() {
         return new UserDao(connectionMaker());
     }
 
+    @Bean
     public AccountDao accountDao() {
         return new AccountDao(connectionMaker());
     }
 
+    @Bean
     public MessageDao messageDao() {
         return new MessageDao(connectionMaker());
     }
 
-    private ConnectionMaker connectionMaker() {
+    @Bean
+    public ConnectionMaker connectionMaker() {
         return new DConnectionMaker();
     }
 }
