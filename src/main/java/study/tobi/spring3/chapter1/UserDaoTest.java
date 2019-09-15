@@ -1,7 +1,6 @@
 package study.tobi.spring3.chapter1;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import study.tobi.spring3.chapter1.user.User;
 import study.tobi.spring3.chapter1.user.dao.DaoFactory;
 import study.tobi.spring3.chapter1.user.dao.UserDao;
@@ -14,14 +13,18 @@ import java.sql.SQLException;
  */
 public class UserDaoTest {
 
+    private static ClassPathXmlApplicationContext context;
+
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-//        userDaoTestUsingApplicationContext();
+//      context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        context = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+        userDaoTestUsingApplicationContext();
         compareDaoCreatedByDaoFactoryDirectly();
         compareDaoCreatedByApplicationContext();
     }
 
     private static void compareDaoCreatedByApplicationContext() {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
 
         UserDao dao3 = context.getBean("userDao", UserDao.class);
         UserDao dao4 = context.getBean("userDao", UserDao.class);
@@ -32,7 +35,6 @@ public class UserDaoTest {
     }
 
     private static void userDaoTestUsingApplicationContext() throws ClassNotFoundException, SQLException {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
 
         UserDao dao = context.getBean("userDao", UserDao.class);
 
@@ -53,6 +55,7 @@ public class UserDaoTest {
     }
 
     private static void compareDaoCreatedByDaoFactoryDirectly() {
+
         DaoFactory daoFactory = new DaoFactory();
         UserDao dao1 = daoFactory.userDao();
         UserDao dao2 = daoFactory.userDao();

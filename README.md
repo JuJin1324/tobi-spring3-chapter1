@@ -1,4 +1,4 @@
-# tobi-spring3-chapter1
+# 1장 오브젝트와 의존관계
 토비의 스프링 3.1 Vol.1 스프링 이해와 원리
 
 ## 기초 셋팅
@@ -182,3 +182,18 @@ DB Connection 인터페이스 구현 오브젝트를 받아 처리함으로써 D
 DI(dependency injection) 의존 주입이란 클래스 레벨에서 구체적인 클래스가 아닌 인터페이스와 의존관계를 가지며  
 런타임 시점에 실제로 의존하는 의존 오브젝트(구체적인 클래스의 오브젝트)를 컨테이너나 팩토리 같은 제 3의 존재로 주입받는 것
 
+## XML 설정
+### Configuration 클래스 XML로 전환
+설명       |   클래스    |  XML  
+--------- | --------- | ---------
+빈 설정파일 | @Configuration | <beans>
+빈 선언 | @Bean methodName() | <bean id="methodName"
+빈 클래스 | return new BeanClass(); | class="package.name.BeanClass">
+빈 setter 메서드 | setFieldName(fieldObject); | <property name="fieldName" ref="fieldObject">
+
+* Property 즉 클래스의 멤버변수(Field)의 이름은 바뀔 수 있는 실제 의존하는 클래스의 이름보다는   
+인터페이스의 이름을 따르는 것이 좋다.
+
+
+
+TODO : 1강 정리 끝나면 한번 쭉 검토하기

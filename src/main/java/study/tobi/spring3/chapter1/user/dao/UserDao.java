@@ -1,5 +1,7 @@
 package study.tobi.spring3.chapter1.user.dao;
 
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import study.tobi.spring3.chapter1.user.User;
 
 import java.sql.*;
@@ -9,12 +11,11 @@ import java.sql.*;
  * Created Date : 08/09/2019
  */
 
+@Setter
+@NoArgsConstructor
 public class UserDao {
+    /* setter를 통한 DI */
     private ConnectionMaker connectionMaker;
-
-    public UserDao(ConnectionMaker connectionMaker) {
-        this.connectionMaker = connectionMaker;
-    }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
         Connection c = connectionMaker.makeConnection();
