@@ -31,8 +31,9 @@ public class UserDaoConnectionCountingTest {
 //        user1.setId("test1");
 //        user1.setName("테스트");
 //        user1.setPassword("test");
-//
 //        dao.add(user1);
+//        System.out.println("Connection counter : " + ccm.getCounter());
+
         User test1 = dao.get("test1");
         System.out.println("test1 = " + test1);
         System.out.println("Connection counter : " + ccm.getCounter());
