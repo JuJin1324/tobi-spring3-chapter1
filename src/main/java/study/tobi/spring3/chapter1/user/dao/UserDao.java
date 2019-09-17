@@ -4,7 +4,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import study.tobi.spring3.chapter1.user.User;
 
-import java.sql.*;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Created by Yoo Ju Jin(yjj@hanuritien.com)
@@ -15,10 +19,10 @@ import java.sql.*;
 @NoArgsConstructor
 public class UserDao {
     /* setter를 통한 DI */
-    private ConnectionMaker connectionMaker;
+    private DataSource dataSource;
 
-    public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = connectionMaker.makeConnection();
+    public void add(User user) throws SQLException {
+        Connection c = dataSource.getConnection();
 
         PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values (?, ?, ?)");
         ps.setString(1, user.getId());
@@ -31,8 +35,8 @@ public class UserDao {
         c.close();
     }
 
-    public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection c = connectionMaker.makeConnection();
+    public User get(String id) throws SQLException {
+        Connection c = dataSource.getConnection();
 
         PreparedStatement ps = c.prepareStatement("select id, name, password from users where id = ?");
         ps.setString(1, id);

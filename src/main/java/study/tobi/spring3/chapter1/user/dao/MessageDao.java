@@ -3,6 +3,8 @@ package study.tobi.spring3.chapter1.user.dao;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.sql.DataSource;
+
 /**
  * Created by Yoo Ju Jin(yjj@hanuritien.com)
  * Created Date : 2019-09-12
@@ -12,5 +14,5 @@ import lombok.Setter;
 @Setter
 public class MessageDao {
 
-    private ConnectionMaker connectionMaker;
+    private DataSource dataSource;
 }

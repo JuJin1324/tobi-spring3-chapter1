@@ -1,5 +1,7 @@
 package study.tobi.spring3.chapter1;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import study.tobi.spring3.chapter1.user.User;
 import study.tobi.spring3.chapter1.user.dao.DaoFactory;
@@ -13,14 +15,14 @@ import java.sql.SQLException;
  */
 public class UserDaoTest {
 
-    private static ClassPathXmlApplicationContext context;
+    private static ApplicationContext context;
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-//      context = new AnnotationConfigApplicationContext(DaoFactory.class);
+    public static void main(String[] args) throws SQLException {
+//        context = new AnnotationConfigApplicationContext(DaoFactory.class);
         context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
         userDaoTestUsingApplicationContext();
-        compareDaoCreatedByDaoFactoryDirectly();
+//        compareDaoCreatedByDaoFactoryDirectly();
         compareDaoCreatedByApplicationContext();
     }
 
@@ -34,7 +36,7 @@ public class UserDaoTest {
         System.out.println("dao3 == dao4 is equal? : " + (dao3 == dao4));
     }
 
-    private static void userDaoTestUsingApplicationContext() throws ClassNotFoundException, SQLException {
+    private static void userDaoTestUsingApplicationContext() throws SQLException {
 
         UserDao dao = context.getBean("userDao", UserDao.class);
 
@@ -54,7 +56,7 @@ public class UserDaoTest {
         System.out.println(user2.getId() + " 조회 성공");
     }
 
-    private static void compareDaoCreatedByDaoFactoryDirectly() {
+    private static void compareDaoCreatedByDaoFactoryDirectly() throws SQLException {
 
         DaoFactory daoFactory = new DaoFactory();
         UserDao dao1 = daoFactory.userDao();
@@ -63,5 +65,8 @@ public class UserDaoTest {
         System.out.println("dao1 = " + dao1);
         System.out.println("dao2 = " + dao2);
         System.out.println("dao1 == dao2 is equal? : " + (dao1 == dao2));
+
+        User user = dao1.get("whiteship");
+        System.out.println("user = " + user);
     }
 }

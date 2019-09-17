@@ -16,6 +16,11 @@ import java.sql.SQLException;
 
 public class UserDaoConnectionCountingTest {
 
+    /*
+     * UserDao 클래스에서
+     * ConnectionMaker -> DataSource
+     * 변경으로 인해 더이상 사용 안함.
+     */
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(CountingDaoFactory.class);
         UserDao dao = context.getBean("userDao", UserDao.class);

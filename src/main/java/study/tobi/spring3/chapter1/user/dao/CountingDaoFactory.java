@@ -2,7 +2,6 @@ package study.tobi.spring3.chapter1.user.dao;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import study.tobi.spring3.chapter1.user.User;
 
 /**
  * Created by Yoo Ju Jin(yjj@hanuritien.com)
@@ -12,22 +11,27 @@ import study.tobi.spring3.chapter1.user.User;
 @Configuration
 public class CountingDaoFactory {
 
-    @Bean
-    public UserDao userDao() {
-        UserDao userDao = new UserDao();
-        userDao.setConnectionMaker(connectionMaker());
+    /*
+     * UserDao 클래스에서
+     * ConnectionMaker -> DataSource
+     * 변경으로 인해 더이상 사용 안함.
+     */
 
-        return userDao;
-    }
+//    @Bean
+//    public UserDao userDao() {
+//        UserDao userDao = new UserDao();
+//        userDao.setConnectionMaker(connectionMaker());
+//
+//        return userDao;
+//    }
 
-    @Bean
-    public ConnectionMaker connectionMaker() {
-        return new CountingConnectionMaker(realConnectionMaker());
-    }
+//    @Bean
+//    public ConnectionMaker connectionMaker() {
+//        return new CountingConnectionMaker(realConnectionMaker());
+//    }
 
-    @Bean
-    public ConnectionMaker realConnectionMaker() {
-//        return new DConnectionMaker();
-        return new HConnectionMaker();
-    }
+//    @Bean
+//    public ConnectionMaker realConnectionMaker() {
+//        return new HConnectionMaker();
+//    }
 }

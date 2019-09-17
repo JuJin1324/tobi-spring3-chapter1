@@ -2,6 +2,9 @@ package study.tobi.spring3.chapter1.user.dao;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+
+import javax.sql.DataSource;
 
 /**
  * Created by Yoo Ju Jin(yjj@hanuritien.com)
@@ -12,10 +15,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DaoFactory {
 
+    private static final String MYSQL_URL = "jdbc:mysql://192.168.0.4:3306/spring3?useSSL=false";
+
     @Bean
     public UserDao userDao() {
         UserDao userDao = new UserDao();
-        userDao.setConnectionMaker(connectionMaker());
+        userDao.setDataSource(dataSource());
 
         return userDao;
     }
@@ -23,19 +28,31 @@ public class DaoFactory {
     @Bean
     public AccountDao accountDao() {
         AccountDao accountDao = new AccountDao();
-        accountDao.setConnectionMaker(connectionMaker());
+        accountDao.setDataSource(dataSource());
         return accountDao;
     }
 
     @Bean
     public MessageDao messageDao() {
         MessageDao messageDao = new MessageDao();
-        messageDao.setConnectionMaker(connectionMaker());
+        messageDao.setDataSource(dataSource());
         return messageDao;
     }
 
+//    @Bean
+//    public ConnectionMaker connectionMaker() {
+//        return new DConnectionMaker();
+//    }
+
     @Bean
-    public ConnectionMaker connectionMaker() {
-        return new DConnectionMaker();
+    public DataSource dataSource() {
+        SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+
+        dataSource.setDriverClass(com.mysql.jdbc.Driver.class);
+        dataSource.setUrl(MYSQL_URL);
+        dataSource.setUsername("scott");
+        dataSource.setPassword("tiger");
+
+        return dataSource;
     }
 }
