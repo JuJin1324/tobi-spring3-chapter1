@@ -5,7 +5,8 @@
 ### Maven
 ```xml
     <properties>
-        <java-version>1.8</java-version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <org.springframework-version>3.0.7.RELEASE</org.springframework-version>
     </properties>
 
