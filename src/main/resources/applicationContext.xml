@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-<!--    <bean id="connectionMaker" class="study.tobi.spring3.chapter1.user.dao.HConnectionMaker" />-->
+<!--    <bean id="connectionMaker" class="study.tobi.spring3.chapter1.user.db.connect.NConnectionMaker" />-->
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
         <property name="driverClass" value="com.mysql.jdbc.Driver" />
@@ -11,15 +11,15 @@
         <property name="username" value="scott" />
         <property name="password" value="tiger" />
     </bean>
-    <bean id="userDao" class="study.tobi.spring3.chapter1.user.dao.UserDao">
+    <bean id="userDao" class="study.tobi.spring3.chapter1.user.db.access.UserDao">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="accountDao" class="study.tobi.spring3.chapter1.user.dao.AccountDao">
+    <bean id="accountDao" class="study.tobi.spring3.chapter1.user.db.access.AccountDao">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="messageDao" class="study.tobi.spring3.chapter1.user.dao.MessageDao">
+    <bean id="messageDao" class="study.tobi.spring3.chapter1.user.db.access.MessageDao">
         <property name="dataSource" ref="dataSource" />
     </bean>
 

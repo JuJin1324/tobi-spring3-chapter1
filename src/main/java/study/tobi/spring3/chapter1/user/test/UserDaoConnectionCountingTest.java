@@ -1,10 +1,10 @@
-package study.tobi.spring3.chapter1;
+package study.tobi.spring3.chapter1.user.test;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import study.tobi.spring3.chapter1.user.User;
-import study.tobi.spring3.chapter1.user.dao.CountingConnectionMaker;
-import study.tobi.spring3.chapter1.user.dao.CountingDaoFactory;
-import study.tobi.spring3.chapter1.user.dao.UserDao;
+import study.tobi.spring3.chapter1.user.domain.User;
+import study.tobi.spring3.chapter1.user.db.connect.CountingConnectionMaker;
+import study.tobi.spring3.chapter1.user.db.factory.CountingDaoFactory;
+import study.tobi.spring3.chapter1.user.db.access.UserDao;
 
 import java.sql.SQLException;
 
@@ -21,7 +21,7 @@ public class UserDaoConnectionCountingTest {
      * ConnectionMaker -> DataSource
      * 변경으로 인해 더이상 사용 안함.
      */
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws SQLException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(CountingDaoFactory.class);
         UserDao dao = context.getBean("userDao", UserDao.class);
 

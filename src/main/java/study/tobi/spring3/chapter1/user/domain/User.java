@@ -1,14 +1,16 @@
-package study.tobi.spring3.chapter1.user;
+package study.tobi.spring3.chapter1.user.domain;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by Yoo Ju Jin(yjj@hanuritien.com)
  * Created Date : 08/09/2019
  */
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class User {
     String id;

@@ -1,7 +1,9 @@
-package study.tobi.spring3.chapter1.user.dao;
+package study.tobi.spring3.chapter1.user.db.factory;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import study.tobi.spring3.chapter1.user.db.connect.ConnectionMaker;
+import study.tobi.spring3.chapter1.user.db.connect.NConnectionMaker;
 
 /**
  * Created by Yoo Ju Jin(yjj@hanuritien.com)
@@ -30,8 +32,8 @@ public class CountingDaoFactory {
 //        return new CountingConnectionMaker(realConnectionMaker());
 //    }
 
-//    @Bean
-//    public ConnectionMaker realConnectionMaker() {
-//        return new HConnectionMaker();
-//    }
+    @Bean
+    public ConnectionMaker realConnectionMaker() {
+        return new NConnectionMaker();
+    }
 }

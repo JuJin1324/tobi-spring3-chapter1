@@ -1,4 +1,4 @@
-package study.tobi.spring3.chapter1.user.dao;
+package study.tobi.spring3.chapter1.user.db.connect;
 
 import java.sql.Connection;
 import java.sql.SQLException;
