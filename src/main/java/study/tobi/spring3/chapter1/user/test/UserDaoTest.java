@@ -2,8 +2,8 @@ package study.tobi.spring3.chapter1.user.test;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import study.tobi.spring3.chapter1.user.domain.User;
-import study.tobi.spring3.chapter1.user.db.factory.DaoFactory;
+import study.tobi.spring3.chapter1.user.db.entity.User;
+import study.tobi.spring3.chapter1.user.db.configure.DaoFactory;
 import study.tobi.spring3.chapter1.user.db.access.UserDao;
 
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package study.tobi.spring3.chapter1.user.domain;
+package study.tobi.spring3.chapter1.user.db.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

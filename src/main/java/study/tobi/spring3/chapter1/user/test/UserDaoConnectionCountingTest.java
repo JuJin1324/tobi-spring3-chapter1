@@ -1,9 +1,9 @@
 package study.tobi.spring3.chapter1.user.test;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import study.tobi.spring3.chapter1.user.domain.User;
+import study.tobi.spring3.chapter1.user.db.entity.User;
 import study.tobi.spring3.chapter1.user.db.connect.CountingConnectionMaker;
-import study.tobi.spring3.chapter1.user.db.factory.CountingDaoFactory;
+import study.tobi.spring3.chapter1.user.db.configure.CountingDaoFactory;
 import study.tobi.spring3.chapter1.user.db.access.UserDao;
 
 import java.sql.SQLException;

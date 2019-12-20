@@ -2,7 +2,7 @@ package study.tobi.spring3.chapter1.user.db.access;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import study.tobi.spring3.chapter1.user.domain.User;
+import study.tobi.spring3.chapter1.user.db.entity.User;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

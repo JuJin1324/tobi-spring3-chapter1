@@ -1,4 +1,4 @@
-package study.tobi.spring3.chapter1.user.db.factory;
+package study.tobi.spring3.chapter1.user.db.configure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
