@@ -232,7 +232,7 @@ UserDao`(class) -> `ConnectionMaker`(interface)  ├─> `DConnectionMaker`(clas
 * 응집도가 높다 = 하나의 모듈, 클래스가 하나의 책임 또는 관심사에만 집중되어 있다.
 
 ### 낮은 결합도
-* 결합도가 낮다 = 책임과 관심사가 다른 오브젝트 또는 모듈과 느스하게 연결된 형태를 유지한다.(클래스 사이의 관계보다는 클래스와 인터페이스 관계)
+* 결합도가 낮다 = 책임과 관심사가 다른 오브젝트 또는 모듈과 느슨하게 연결된 형태를 유지한다.(클래스 사이의 관계보다는 클래스와 인터페이스 관계)
 
 ### 전략 패턴
 * 전략 패턴이란 자신의 <b>기능 맥락(context)</b>에서 필요에 따라 <b>변경이 필요한 알고리즘을 인터페이스</b>를 통해  
@@ -347,56 +347,208 @@ DaoFactory를 설정정보로 사용하여 Spring 컨테이너(스프링 엔진)
 * 프로토타입 스코프 : 빈을 요청할 때마다 매번 새로운 오브젝트 생성하여 리턴
 * 요청(request) 스코프 : HTTP 요청이 생길 때마다 오브젝트를 생성하여 리턴
 
-### 1.7 의존관계 주입(DI : Dependency injection)
-* 설계 모델의 관점에서의 의존관계  
-`UserDao` -->(의존) `<<interface>>ConnectionMaker`
+## 1.7 의존관계 주입(DI : Dependency injection)
+### 1.7.1 제어의 역전(IoC)과 의존관계 주입
+* DI : 의존관계 주입, 스프링 IoC 기능의 대표적인 동작원리이며 가장 차별화된 특징이기 때문에 스프링을 DI 컨테이너라고도 부른다.
 
-* 런타임 시에 오브젝트 사이에서 만들어지는 의존관계 : <b>런타임 의존관계</b>  
-`UserDao` -->(실제 오브젝트 의존) `DConnectionMaker` (제3자인 `DaoFactory` 개입)  
-실제로 의존하는 오브젝트를 <b>의존 오브젝트</b>
+### 1.7.2 런타임 의존관계 설정
+* 의존관계란
+    - `A --> B` : A가 B에 의존한다 = B가 변하면 그것이 A에 영향을 미친다.
+    - 대표적인 예가 A에서 B에 정의된 메서드를 호출해서 사용하는 경우이다. B에 새로운 메서드가 추가되거나 기존 메서드의 형식이 바뀌면 A도 그에 따라 수정되거나 추가돼야 한다.
+    - 또한 B의 형식은 그대로지만 기능이 내부적으로 변경되면, 결과적으로 A의 기능이 수행되는 데도 영향을 미칠 수 있다.
+    - 의존관계에는 방향성이 있다. = A가 B에 의존하고 있지만, 반대로 B는 A에 의존하지 않는다. = B는 A의 변화에 영향을 받지 않는다.
+
+* UserDao의 의존관계
+    - `UserDao` --> `<<interface>>ConnectionMaker`
+    - UserDao는 ConnectionMaker 인터페이스에만 의존하고 있음으로 ConnectionMaker가 변하면 UserDao 클래스는 그 영향을 직접적으로 받게 된다.
+    - 하지만 ConnectionMaker 를 구현한 클래스인 DConnectionMaker 와 UserDao는 의존관계가 없기 때문에 DConnectionMaker 가 다른 클래스로 교체되어도 UserDao는 아무런 영향을 받지 않는다.
+    - 이렇게 인터페이스에 대해서만 의존관계를 만들어두면 해당 인터페이스를 구현한 클래스와의 관계가 느슨해지면서 변화에 영향을 덜 받는 상태가 된다. 결합도가 낮다고할 수 있다.
+    - 결합도가 낮다 = 책임과 관심사가 다른 오브젝트 또는 모듈과 느슨하게 연결된 형태를 유지한다.(클래스 사이의 관계 X -> 클래스와 인터페이스 관계 O)
+    - `UserDao` -->(사용) `<<interface>>ConnectionMaker` ◁--(상속받음) `DConnectionMaker`
+
+* <b>런타임 의존관계</b> 
+    - 런타임 시에 오브젝트 사이에서 만들어지는 의존관계, 실체화된 의존관계   
+    - `UserDao` -->(실제 오브젝트 의존) `DConnectionMaker` (제3자인 `DaoFactory` 개입)  
+    - 실제로 의존하는 오브젝트를 <b>의존 오브젝트</b>
 
 * 의존관계 주입의 필요 조건
-  - 클래스나 코드 레벨에서 런타임 시점의 의존관계(직접 클래스 주입)가 드러나지 않는다. 
-    그러기 위해서는 인터페이스에만 의존하고 있어야한다.
+  - 클래스나 코드 레벨에서 런타임 시점의 의존관계(직접 클래스 주입)가 드러나지 않는다. 그러기 위해서는 인터페이스에만 의존하고 있어야한다.
   - 런타임 시점의 의존관계는 컨테이너나 팩토리 같은 제 3의 존재가 결정한다.
   - 의존관계는 사용할 오브젝트에 대한 레퍼런스를 외부에서 제공(주입)해줌으로써 만들어진다.
-  
-* 정리  
-DI(dependency injection) 의존 주입이란 클래스 레벨에서 구체적인 클래스가 아닌 인터페이스와 의존관계를 가지며  
-런타임 시점에 실제로 의존하는 의존 오브젝트(구체적인 클래스의 오브젝트)를 컨테이너나 팩토리 같은 제 3의 존재로 주입받는 것
 
-## XML 설정
-### Configuration 클래스 XML로 전환
+* UserDao의 의존관계 주입
+    - 기존 UserDao 코드에서는 런타임 시의 의존관계가 코드 속에 다 미리 결정되어 있었다. 
+```java
+public UserDao() {
+    connectionMaker = new DConnectionMaker();
+}
+```
+    - 제 3자인 DaoFactory에 런타임 의존관계를 설정해주는 것으로 수정하였다.
+    - DaoFactory 처럼 의존관계를 담당하는 클래스를 의존관계 주입을 담당하는 컨테이너 줄여서 DI 컨테이너라고 한다.
+    
+### 1.7.3 의존관계 검색과 주입
+* 의존관계 주입 - daoFactory에 의해서 주입받는다.
+```java
+public UserDao() {
+    DaoFactory daoFactory = new DaoFactory();
+    this.connectionMaker = daoFactory.connectionMaker();
+}
+```
+* 의존관계 검색 - ApplicationContext의 getBean을 통해서 주입받을 빈을 검색한다.
+```java
+public UserDao() {
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class); 
+    this.connectionMaker = context.getBean("connectionMaker", ConnectionMaker.class);
+}
+```
+* 의존관계 주입 쪽의 코드가 훨씬 깔끔해보이며 UserDao 같은 경우는 의존관계 주입을 하는 것이 맞다.
+* 그렇다면 의존관계 검색은 어디서 쓰일까? - 의존관계 주입은 보통 파라미터를 통해서 주입받을 객체의 인터페이스를 선언한다. 하지만 main 메서드에서는 특정 인터페이스를 파라미터로 선언할 수 없기 때문에
+DI를 이용해서 오브젝트를 주입받을 방법이 없다. 그럴 때 의존관계 검색을 통해서 의존관계를 주입받는다.
+* 의존관계를 검색하는 오브젝트는 자신이 스프링 빈일 필요가 없다.(= main 메서드를 가진 UserDaoTest가 빈 메서드일 필요가 없는 것처럼), 의존관계 검색은 대부분 클라이언트(빈을 사용하는 곳, 서버에서의 클라이언트가 아님)에서 사용한다.
+* 의존관계 주입은 빈으로 주입하려는 객체와 주입을 받는 객체 모두 스프링 빈으로 등록이 되어있어야한다.
+* DI를 원하는 오브젝트는 먼저 자기 자신이 컨테이너가 관리하는 빈이 돼야한다.
+  
+### 1.7.4 의존관계 주입의 응용
+* 기능 구현의 교환
+    - 실제 운영 DB는 매우 중요 자원이며 평상시에도 항상 부하를 많이 받고 있어서 개발 중에는 TB(Test Bed) DB 혹은 Local DB를 사용하여 개발한다.
+    - 인터페이스를 통하여 손쉽게 Local DB Connection 클래스와 상용 DB Connection 을 생성할 수 있고 DI를 통하여 손쉽게 변경 가능하다.
+```java
+// 개발용 ConnectionMaker 생성 코드
+@Bean
+public ConnectionMaker connectionMaker() {
+    return new LocalDBConnectionMaker();
+}
+```
+```java
+// 운영용 ConnectionMaker 생성 코드
+@Bean
+public ConnectionMaker connectionMaker() {
+    return new ProductionDBConnectionMaker();
+}
+```
+* 부가기능 추가
+    - DB 연결 횟수를 카운팅하는 기능을 추가하고 싶다.
+    - 방법 1. makeConnection 메서드 호출하는 DAO 마다 호출 부분에 카운터를 증가시키는 코드를 넣는다.
+    - 방법 2. DB 연결횟수를 세는 일은 DAO의 관심사항이 아니다. 어떻게든 분리돼야할 책임이다. DAO와 DB 커넥션을 만드는 오브젝트 사이에 연결횟수를 카운팅하는 오브젝트를 하나 더 추가한다.
+```java
+public class CountingConnectionMaker implements ConnectionMaker {
+    int counter = 0;
+    private ConnectionMaker realConnectionMaker;
+    
+    public CountingConnectionMaker(ConnectionMaker realConnectionMaker) {
+        this.realConnectionMaker = realConnectionMaker;
+    }
+    public ConnectionMaker makeConnection() throws ClassNotFoundException, SQLException {
+        this.counter++;
+        return this.counter;
+    }
+}
+```
+* 실습 
+    - CountingConnectionMaker로 의존관계를 설정할 DI 컨테이너 `CountingDaoFactory` 클래스 생성
+    - DI 컨테이너로 생성한 의존관계를 확인해볼 클라이언트 `UserDaoConnectionCountingTest` 클래스 생성
+
+### 1.7.5 메서드를 이용한 의존관계 주입
+* 의존관계 주입(DI) 방식 2가지 
+    - 1) 생성자(Constructor)를 통한 주입
+    - 2) 수정자(Setter)를 통한 주입
+
+## 1.8 XML을 이용한 설정  
+* DaoFactory와 같은 의존관계 설정정보를 자바 코드가 아닌 XML 파일로 만들 수 있다.(책에서는 자바 코드로 만드는게 귀찮다고 나오는데 springboot로 오면서 다 자바로 함. XML 안쓴다.) 
+
+### 1.8.1 XML 설정
+* @Bean <b>메서드의 이름</b> = <b>빈의 이름</b>이다. 이 이름은 getBean("빈 이름", 빈 클래스) 에서 사용된다. 
+* ConnectionMaker() 전환
+
 설명       |   클래스    |  XML  
 --------- | --------- | ---------
-빈 설정파일 | @Configuration | <beans>
-빈 선언 | @Bean methodName() | <bean id="methodName"
-빈 클래스 | return new BeanClass(); | class="package.name.BeanClass">
+빈 설정파일 | @Configuration | `<beans>`
+빈 선언 | @Bean <b>methodName</b>() | <bean id="<b>methodName</b>"
+빈 클래스 | return new <b>BeanClass</b>(); | class="package.name.<b>BeanClass</b>">
 빈 setter 메서드 | setFieldName(fieldObject); | `<property name="fieldName" ref="fieldObject">`
 
-* Property 즉 클래스의 멤버변수(Field)의 이름은 바뀔 수 있는 실제 의존하는 클래스의 이름보다는   
-인터페이스의 이름을 따르는 것이 좋다.
+* 위의 표와 같이 ConnectionMaker() 를 전환해보면 다음과 같다.
+    - `<bean id="connectionMaker" class="db.connect.DConnectionMaker" />`
+
+* userDao() 전환
+```xml
+    <bean id="userDao" class="db.access.UserDao">
+        <property name="connectionMaker" ref="connectionMaker"/>
+    </bean>
+```    
+* property에서 <b>name</b>은 UserDao의 멤버변수 명, <b>ref</b>는 주입할 bean의 id
+* XML의 의존관계 주입 정보
+    - Property 즉 클래스의 멤버변수(Field)의 이름은 바뀔 수 있는 실제 의존하는 클래스의 이름보다는 인터페이스의 이름을 따르는 것이 좋다.
+    - 예시) UserDao 의 ConnectionMaker 인터페이스 객체의 이름에 실제로는 DConnectionMaker 혹은 CountingConnectionMaker가 
+    올 것이지만 객체의 이름을 connectionMaker로 짓는 것이 좋다.
+    - 하지만 같은 인터페이스 타입의 빈이 여러 개 정의한 경우 알아서 이름 짓는다.
+
+### 1.8.2 XML을 이용하는 애플리케이션 컨텍스트
+* 애플리케이션 컨텍스트 객체로 `GenericXmlApplicationContext`를 사용한다.
+    - `GenericXmlApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");`
+    
+### 1.8.3 DataSource 인터페이스로 변환 
+* DataSource 인터페이스 적용
+    - 기존 만들어서 사용했던 ConnectionMaker 인터페이스에서 -> JAVA에서 제공하는 DB 커넥션 인터페이스인 <b>DataSource</b>로 교체
+    - ConnectionMaker의 <b>makeConnection()</b> -> DataSource의 <b>getConnection()</b>으로 교체
+    - 의존관계 설정 클래스인 DaoFactory에서 실제로 DataSource 인터페이스에 DI할 구현 객체 SimpleDriverDataSource를 Bean 선언
+```java
+    @Bean
+    public DataSource dataSource() {
+        SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+
+        dataSource.setDriverClass(com.mysql.jdbc.Driver.class);
+        dataSource.setUrl("jdbc:mysql://localhost/spring3");
+        dataSource.setUsername("scott");
+        dataSource.setPassword("tiger");
+
+        return dataSource;
+    }
+```
+
+### 1.8.4 프로퍼티 값의 주입
+* 값 주입
+    - XML 파일에 dataSource 빈 선언 및 설정 값 주입
+```xml
+<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+    <property name="driverClass" value="com.mysql.jdbc.Driver" />
+    <property name="url" value="jdbc:mysql://localhost/spring3" />
+    <property name="username" value="scott" />
+    <property name="password" value="tiger" />
+</bean>
+```
+* value 값의 자동 변환
+    - driverClass는 원래 String 타입이 아니라 java.lang.Class 타입인데 별다른 타입정보 없이 
+    클래스의 이름이 텍스트 형태로 value에 들어가 있다.
+    - 스프링에서 프로퍼티의 값을, Setter 메서드의 파라미터 타입을 참고해서 적절한 형태로 자동 변환해준다. 
+    내부에서 다음과 같은 변환 작업이 일어난다고 생각하면 된다.
+```java
+    Class driverClass = Class.forName("com.mysql.jdbc.Driver");
+    dataSource.setDriverClass(driverClass);
+``` 
 
 ## 정리
+* 공통 부분(기능) 메서드로 추출(리팩토링) -> 변화 가능성이 있는 기능(DB 커넥션 연결) 클래스로 분리(관심사 분리) 
+-> 해당 클래스는 인터페이스를 통하여 구현하도록해서 클래스가 다른 클래스로 교체되어도 해당 인터페이스를 사용하는 코드에는 영향이 가지 않도록 변경(전략 패턴) 
 
 ### 개방 폐쇠 원칙
-* 자신의 책임 자체가 변경되는 경우 외에는 불필요한 변화가 발생하지 않도록 막아주고(폐쇠),  
+* 자신의 책임 자체가 변경되는 경우 외에는 불필요한 변화가 발생하지 않도록 막아주고(폐쇠), 
 자신이 사용하는 외부 오브젝트의 기능은 자유롭게 확장하거나 변경할 수 있게 한다.(개방)
 
 ### 높은 응집도, 낮은 결합도
-* 한쪽의 기능 변화가 다른 쪽의 변경을 요구하지 않아도 되면 낮은 결합도,   
-자신의 책임과 관심사에만 순수하게 집중하면 높은 응집도
-
-### Bean
-* 스프링이 제어권을 가지고 직접 만들고 관계를 부여하는 오브젝트를 <b>빈(bean)</b>이라고 부른다.
-
-### DI(의존성 주입)
-* DI(dependency injection) 의존 주입이란 클래스 레벨에서 구체적인 클래스가 아닌 인터페이스와 의존관계를 가지며  
-런타임 시점에 실제로 의존하는 의존 오브젝트(구체적인 클래스의 오브젝트)를 컨테이너나 팩토리 같은 제 3의 존재로 주입받는 것
+* 한쪽의 기능 변화가 다른 쪽의 변경을 요구하지 않아도 되면 낮은 결합도, 자신의 책임과 관심사에만 순수하게 집중하면 높은 응집도
 
 ### IoC(제어의 역전)
 * 오브젝트가 생성되고 여타 오브젝트와 관계를 맺는 작업의 제어권을 별도의 오브젝트 팩토리를 만들어 넘긴다.
 (해당 팩토리 클래스를 IoC 컨테이너, Application Context 혹은 빈 팩토리 라고도 부른다)
+
+### Bean
+* 스프링이 제어권을 가지고 직접 만들고 관계를 부여하는 오브젝트를 <b>빈(bean)</b>이라고 부른다.
+* 스프링에서 빈을 디폴트로 싱글톤으로 관리하여 자원(메모리)을 효율적으로 관리함. => 기존 싱글톤 객체의 단점을 보완 
+
+### DI(의존성 주입)
+* DI(dependency injection) 의존 주입이란 클래스 레벨에서 구체적인 클래스가 아닌 인터페이스와 의존관계를 가지며 
+런타임 시점에 실제로 의존하는 의존 오브젝트(구체적인 클래스의 오브젝트)를 컨테이너나 팩토리 같은 제 3의 존재로 주입받는 것
 
 ### 스프링이란?
 * 어떻게 오브젝트가 설계되고, 만들어지고, 어떻게 관계를 맺고 사용되는지에 관심을 갖는 프레임워크
