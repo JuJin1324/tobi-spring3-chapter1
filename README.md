@@ -195,6 +195,8 @@ public User get(String id) throws SQLException {
 ## 1.3 처리 3 : 분리한 메서드를 상속이 아닌 외부 클래스로 분리
 * 상속으로 인한 단점(다중상속 불가, 부모클래스와의 관계가 깊어 부모클래스의 기능 추가하거나 수정할 시에 자식 클래스 역시 수정해야함)  
 으로 인해 '관심사1 : DB연결' 기능을 클래스로 분리
+* 팁 : mysql DB는 연결시에 SSL 프로토콜 사용을 권장하지만 현재 DB 연결은 상용 서비스가 목적이 아닌 스터디 목적이기 때문에 복잡한 SSL 프로토콜 사용은 하지 않는다.
+해당 경고가 나오지 않게 하기 위해서 mysql url 뒤에 <b>?useSSL=false</b>를 붙여준다.
 ```java
 public class SimpleConnectionMaker {
     public Connection makeNewConnection() throws ClassNotFoundException, SQLException {
@@ -498,7 +500,7 @@ public class CountingConnectionMaker implements ConnectionMaker {
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 
         dataSource.setDriverClass(com.mysql.jdbc.Driver.class);
-        dataSource.setUrl("jdbc:mysql://localhost/spring3");
+        dataSource.setUrl("jdbc:mysql://localhost/spring3?useSSL=false");
         dataSource.setUsername("scott");
         dataSource.setPassword("tiger");
 
@@ -512,7 +514,7 @@ public class CountingConnectionMaker implements ConnectionMaker {
 ```xml
 <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
     <property name="driverClass" value="com.mysql.jdbc.Driver" />
-    <property name="url" value="jdbc:mysql://localhost/spring3" />
+    <property name="url" value="jdbc:mysql://localhost/spring3?useSSL=false" />
     <property name="username" value="scott" />
     <property name="password" value="tiger" />
 </bean>
