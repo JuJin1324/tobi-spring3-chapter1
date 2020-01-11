@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.sql.DataSource;
 
 /**
- * Created by Yoo Ju Jin(yjj@hanuritien.com)
+ * Created by Yoo Ju Jin(jujin1324@daum.net)
  * Created Date : 2019-09-12
  */
 

@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Created by Yoo Ju Jin(yjj@hanuritien.com)
+ * Created by Yoo Ju Jin(jujin1324@daum.net)
  * Created Date : 08/09/2019
  */
 
